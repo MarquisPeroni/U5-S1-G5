@@ -1,20 +1,26 @@
 <?php
+// Avvia la sessione e richiede i file necessari per la gestione dell'autenticazione
 session_start();
 require_once 'Database.php';
 require_once 'User.php';
 
+// Connessione al database
 $database = new Database();
 $db = $database->connect();
 
+// Istanzia un oggetto User per gestire le operazioni CRUD
 $user = new User($db);
 
+// Verifica se l'utente è loggato, altrimenti reindirizza alla pagina di login
 if (!$user->isLoggedIn()) {
     header('Location: index.php');
     exit;
 }
 
+// Messaggio per feedback delle operazioni CRUD
 $message = '';
 
+// Gestione della creazione di un nuovo record
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create_user'])) {
     $nome = $_POST['new_nome'];
     $cognome = $_POST['new_cognome'];
@@ -26,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create_user'])) {
     }
 }
 
+// Gestione dell'aggiornamento di un record esistente
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_user'])) {
     $id = $_POST['user_id'];
     $newNome = $_POST['updated_nome'];
@@ -38,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_user'])) {
     }
 }
 
+// Gestione dell'eliminazione di un record esistente
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_user'])) {
     $id = $_POST['user_id'];
 
@@ -48,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_user'])) {
     }
 }
 
+// Legge tutti i record dalla tabella 'avalanche'
 $records = $user->readAll();
 ?>
 
