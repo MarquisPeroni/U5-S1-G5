@@ -13,47 +13,42 @@ if (!$user->isLoggedIn()) {
     exit;
 }
 
-// Messaggio di successo o errore dopo le operazioni CRUD
 $message = '';
 
-// Se è stata inviata una richiesta di creazione di un nuovo utente
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['create_user'])) {
-    $username = $_POST['new_username'];
-    $password = $_POST['new_password'];
+    $nome = $_POST['new_nome'];
+    $cognome = $_POST['new_cognome'];
 
-    if ($user->create($username, $password)) {
-        $message = 'Nuovo utente creato con successo!';
+    if ($user->create($nome, $cognome)) {
+        $message = 'Nuovo record creato con successo!';
     } else {
-        $message = 'Errore durante la creazione del nuovo utente.';
+        $message = 'Errore durante la creazione del nuovo record.';
     }
 }
 
-// Se è stata inviata una richiesta di aggiornamento di un utente
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_user'])) {
     $id = $_POST['user_id'];
-    $newUsername = $_POST['updated_username'];
-    $newPassword = $_POST['updated_password'];
+    $newNome = $_POST['updated_nome'];
+    $newCognome = $_POST['updated_cognome'];
 
-    if ($user->update($id, $newUsername, $newPassword)) {
-        $message = 'Utente aggiornato con successo!';
+    if ($user->update($id, $newNome, $newCognome)) {
+        $message = 'Record aggiornato con successo!';
     } else {
-        $message = 'Errore durante l\'aggiornamento dell\'utente.';
+        $message = 'Errore durante l\'aggiornamento del record.';
     }
 }
 
-// Se è stata inviata una richiesta di eliminazione di un utente
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_user'])) {
     $id = $_POST['user_id'];
 
     if ($user->delete($id)) {
-        $message = 'Utente eliminato con successo!';
+        $message = 'Record eliminato con successo!';
     } else {
-        $message = 'Errore durante l\'eliminazione dell\'utente.';
+        $message = 'Errore durante l\'eliminazione del record.';
     }
 }
 
-// Leggi tutti gli utenti dal database
-$users = $user->readAll();
+$records = $user->readAll();
 ?>
 
 <!DOCTYPE html>
@@ -68,40 +63,40 @@ $users = $user->readAll();
     <p>Benvenuto, <?php echo $_SESSION['user_id']; ?>!</p>
     <a href="logout.php">Logout</a>
 
-    <h3>Gestione Utenti</h3>
+    <h3>Gestione Dati Tabella Avalanche</h3>
     <p><?php echo $message; ?></p>
 
-    <h4>Crea Nuovo Utente</h4>
+    <h4>Crea Nuovo Record</h4>
     <form method="post" action="">
-        <label for="new_username">Username:</label>
-        <input type="text" id="new_username" name="new_username" required><br>
-        <label for="new_password">Password:</label>
-        <input type="password" id="new_password" name="new_password" required><br>
-        <button type="submit" name="create_user">Crea Utente</button>
+        <label for="new_nome">Nome:</label>
+        <input type="text" id="new_nome" name="new_nome" required><br>
+        <label for="new_cognome">Cognome:</label>
+        <input type="text" id="new_cognome" name="new_cognome" required><br>
+        <button type="submit" name="create_user">Crea Record</button>
     </form>
 
-    <h4>Elenco Utenti</h4>
+    <h4>Elenco Records</h4>
     <table>
         <tr>
             <th>ID</th>
-            <th>Username</th>
-            <th>Password</th>
+            <th>Nome</th>
+            <th>Cognome</th>
             <th>Azioni</th>
         </tr>
-        <?php foreach ($users as $user): ?>
+        <?php foreach ($records as $record): ?>
             <tr>
-                <td><?php echo $user['id']; ?></td>
-                <td><?php echo $user['username']; ?></td>
-                <td><?php echo $user['password']; ?></td>
+                <td><?php echo $record['id']; ?></td>
+                <td><?php echo $record['nome']; ?></td>
+                <td><?php echo $record['cognome']; ?></td>
                 <td>
                     <form method="post" action="">
-                        <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                        <input type="text" name="updated_username" value="<?php echo $user['username']; ?>">
-                        <input type="text" name="updated_password" value="<?php echo $user['password']; ?>">
+                        <input type="hidden" name="user_id" value="<?php echo $record['id']; ?>">
+                        <input type="text" name="updated_nome" value="<?php echo $record['nome']; ?>">
+                        <input type="text" name="updated_cognome" value="<?php echo $record['cognome']; ?>">
                         <button type="submit" name="update_user">Aggiorna</button>
                     </form>
                     <form method="post" action="">
-                        <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                        <input type="hidden" name="user_id" value="<?php echo $record['id']; ?>">
                         <button type="submit" name="delete_user">Elimina</button>
                     </form>
                 </td>
@@ -110,3 +105,5 @@ $users = $user->readAll();
     </table>
 </body>
 </html>
+
+

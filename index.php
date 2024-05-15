@@ -12,10 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Debug per verificare i valori inseriti nel form
-    echo "Username: $username <br>";
-    echo "Password: $password <br>";
-
     if ($user->login($username, $password)) {
         header('Location: admin_panel.php');
         exit;
@@ -42,3 +38,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
     </form>
 </body>
 </html>
+
+
